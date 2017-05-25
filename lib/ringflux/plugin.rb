@@ -2,6 +2,9 @@ require 'influxdb'
 require 'countdownlatch'
 
 class Ringflux::Plugin < Adhearsion::Plugin
+  DEFAULT_OPTS = {
+    async: true,
+  }
   mattr_reader :connection
 
   # Configure the connection information to your InfluxDB instance.
@@ -10,7 +13,7 @@ class Ringflux::Plugin < Adhearsion::Plugin
     username    nil         , desc: 'InfluxDB username'
     password    nil         , desc: 'InfluxDB password'
     database    'adhearsion', desc: 'host where the message queue is running'
-    async       true        , desc: 'Write metrics asynchronously'
+    opts        DEFAULT_OPTS, desc: 'Options to pass to the InfluxDB client'
   end
 
   run :ringflux, after: :punchblock do
@@ -20,7 +23,7 @@ class Ringflux::Plugin < Adhearsion::Plugin
 
   def start
     logger.info "Connecting to InfluxDB #{config.username}@#{config.host} with database #{config.database}"
-    @@connection = InfluxDB::Client.new config.database, host: config.host, username: config.username, password: config.password, async: config.async
+    @@connection = InfluxDB::Client.new config.database, config.opts.merge(host: config.host, username: config.username, password: config.password)
   end
 
   def self.write_point(*args)
