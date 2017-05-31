@@ -22,7 +22,7 @@ class Ringflux::Plugin < Adhearsion::Plugin
   end
 
   def configure
-    logger.info "Connecting to InfluxDB #{config.username}@#{config.host} with database #{config.database}"
+    logger.info "Configuring InfluxDB #{config.username}@#{config.host} with database #{config.database}"
     @@connection = InfluxDB::Client.new config.database, config.opts.merge(host: config.host, username: config.username, password: config.password)
   end
 
