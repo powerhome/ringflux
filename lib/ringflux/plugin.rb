@@ -16,12 +16,12 @@ class Ringflux::Plugin < Adhearsion::Plugin
     opts        DEFAULT_OPTS, desc: 'Options to pass to the InfluxDB client'
   end
 
-  run :ringflux, after: :punchblock do
+  init :ringflux, after: :punchblock do
     InfluxDB::Logging.logger = logger
-    new.start
+    new.configure
   end
 
-  def start
+  def configure
     logger.info "Connecting to InfluxDB #{config.username}@#{config.host} with database #{config.database}"
     @@connection = InfluxDB::Client.new config.database, config.opts.merge(host: config.host, username: config.username, password: config.password)
   end
