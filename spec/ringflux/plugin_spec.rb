@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Amequp::Plugin do
-  subject { Amequp::Plugin.new }
+describe Ringflux::Plugin do
+  subject { Ringflux::Plugin.new }
 
-  describe '#start' do
+  describe '#configure' do
     it 'should allow specifying a URI for the connection information' do
       config = {uri: 'amqp://amqpuser:amqppass@foo.bar.com:9530/'}
       expected_params = {
@@ -14,7 +14,7 @@ describe Amequp::Plugin do
         uri: 'amqp://amqpuser:amqppass@foo.bar.com:9530/'
       }
       subject.should_receive(:establish_connection).once.with(expected_params)
-      subject.start config
+      subject.configure config
     end
 
     it 'should default to the correct port if the URI does not specify one' do
@@ -27,7 +27,7 @@ describe Amequp::Plugin do
         uri: 'amqp://amqpuser:amqppass@foo.bar.com/'
       }
       subject.should_receive(:establish_connection).once.with(expected_params)
-      subject.start config
+      subject.configure config
     end
   end
 end

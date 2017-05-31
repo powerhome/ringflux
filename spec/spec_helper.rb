@@ -1,5 +1,5 @@
 require 'adhearsion'
-require 'amequp'
+require 'ringflux'
 
 RSpec.configure do |config|
   config.color_enabled = true
