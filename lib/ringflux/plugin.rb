@@ -12,6 +12,7 @@ class Ringflux::Plugin < Adhearsion::Plugin
     password    nil         , desc: 'InfluxDB password'
     database    'adhearsion', desc: 'host where the message queue is running'
     async       true        , desc: 'Asynchronously send data to InfluxDB'
+    use_ssl     nil         , desc: 'Connect to InfluxDB using SSL'
     opts        DEFAULT_OPTS, desc: 'Options to pass to the InfluxDB client'
   end
 
@@ -28,7 +29,8 @@ class Ringflux::Plugin < Adhearsion::Plugin
         host: config.host,
         username: config.username,
         password: config.password,
-        async: config.async
+        async: config.async,
+        use_ssl: config.use_ssl
       )
     )
   end
