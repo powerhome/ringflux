@@ -11,7 +11,7 @@ class Ringflux::Plugin < Adhearsion::Plugin
     username    nil         , desc: 'InfluxDB username'
     password    nil         , desc: 'InfluxDB password'
     database    'adhearsion', desc: 'host where the message queue is running'
-    async       true        , desc: 'Asynchronously send data to InfluxDB'
+    async       true        , desc: 'Asynchronously send data to InfluxDB', transform: ->(value) { value && value != "false" }
     use_ssl     nil         , desc: 'Connect to InfluxDB using SSL'
     opts        DEFAULT_OPTS, desc: 'Options to pass to the InfluxDB client'
   end
