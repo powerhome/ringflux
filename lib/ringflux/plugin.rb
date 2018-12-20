@@ -2,9 +2,7 @@ require 'influxdb'
 require 'countdownlatch'
 
 class Ringflux::Plugin < Adhearsion::Plugin
-  DEFAULT_OPTS = {
-    async: true,
-  }
+  DEFAULT_OPTS = {}
   mattr_reader :connection
 
   # Configure the connection information to your InfluxDB instance.
@@ -13,6 +11,8 @@ class Ringflux::Plugin < Adhearsion::Plugin
     username    nil         , desc: 'InfluxDB username'
     password    nil         , desc: 'InfluxDB password'
     database    'adhearsion', desc: 'host where the message queue is running'
+    async       true        , desc: 'Asynchronously send data to InfluxDB', transform: ->(value) { value && value != "false" }
+    use_ssl     nil         , desc: 'Connect to InfluxDB using SSL'
     opts        DEFAULT_OPTS, desc: 'Options to pass to the InfluxDB client'
   end
 
@@ -23,7 +23,16 @@ class Ringflux::Plugin < Adhearsion::Plugin
 
   def configure
     logger.info "Configuring InfluxDB #{config.username}@#{config.host} with database #{config.database}"
-    @@connection = InfluxDB::Client.new config.database, config.opts.merge(host: config.host, username: config.username, password: config.password)
+    @@connection = InfluxDB::Client.new(
+      config.database,
+      config.opts.merge(
+        host: config.host,
+        username: config.username,
+        password: config.password,
+        async: config.async,
+        use_ssl: config.use_ssl
+      )
+    )
   end
 
   def self.write_point(*args)
