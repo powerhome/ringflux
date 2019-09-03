@@ -8,6 +8,7 @@ class Ringflux::Plugin < Adhearsion::Plugin
   # Configure the connection information to your InfluxDB instance.
   config :ringflux do
     host        nil         , desc: 'Hostname/IP to the InfluxDB server'
+    port        8086        , desc: 'TCP port for InfluxDB server'
     username    nil         , desc: 'InfluxDB username'
     password    nil         , desc: 'InfluxDB password'
     database    'adhearsion', desc: 'host where the message queue is running'
@@ -22,11 +23,12 @@ class Ringflux::Plugin < Adhearsion::Plugin
   end
 
   def configure
-    logger.info "Configuring InfluxDB #{config.username}@#{config.host} with database #{config.database}"
+    logger.info "Configuring InfluxDB #{config.username}@#{config.host}:#{config.port} with database #{config.database}"
     @@connection = InfluxDB::Client.new(
       config.database,
       config.opts.merge(
         host: config.host,
+        port: config.port,
         username: config.username,
         password: config.password,
         async: config.async,
