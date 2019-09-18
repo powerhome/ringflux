@@ -30,7 +30,8 @@ class Ringflux::Plugin < Adhearsion::Plugin
         username: config.username,
         password: config.password,
         async: config.async,
-        use_ssl: config.use_ssl
+        use_ssl: config.use_ssl,
+        retry: 3
       )
     )
   end
