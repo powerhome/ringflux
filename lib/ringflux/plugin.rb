@@ -55,8 +55,6 @@ class Ringflux::Plugin < Adhearsion::Plugin
     raise ArgumentError, "Cannot write empty values to series: #{args[0]}" if args[1][:values].empty?
     logger.debug "Sending data to InfluxDB: #{args.inspect}"
     @@connection.write_point(*args)
-  rescue ArgumentError => e
-    logger.error "Cannot write data to InfluxDB: #{e.inspect}"
   end
 
   private
