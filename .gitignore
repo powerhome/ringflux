@@ -2,3 +2,5 @@
 .DS_Store
 /Gemfile.lock
 /ringflux-*.gem
+/.yardoc
+/doc

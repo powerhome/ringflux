@@ -39,8 +39,21 @@ class Ringflux::Plugin < Adhearsion::Plugin
     )
   end
 
+  #
+  # Write data to InfluxDB client
+  # @overload write_point(series, data, precision = nil, retention_policy = nil, database = nil)
+  #   @param [String] series The name of the series to which to write
+  #   @param [Hash] data The hash of data to send in the payload
+  #     * :values [Hash] values The hash of key value pairs for the series
+  #     * :tags [Hash] tags Optional hash of tags for the data
+  #     * :timestamp [Integer] timestamp Optional epoch timestamp for the data (InfluxDB will default to now)
+  #   @param [String] precision Optional string for time precision
+  #   @param [String] retention_policy Optional string for retention policy
+  #   @param [String] database Optional string to override database
+  #
   def self.write_point(*args)
-    logger.debug "Sending data to  InfluxDB: #{args.inspect}"
+    raise ArgumentError, "Cannot write empty values to series: #{args[0]}" if args[1][:values].empty?
+    logger.debug "Sending data to InfluxDB: #{args.inspect}"
     @@connection.write_point(*args)
   end
 
