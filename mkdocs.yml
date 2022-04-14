@@ -1,0 +1,7 @@
+site_name: Ringflux
+site_description: Ringflux Documentation
+nav:
+  - "Home": "README.md"
+  - "Changelog": "CHANGELOG.md"
+plugins:
+  - techdocs-core

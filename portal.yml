@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ringflux
+  title: Ringflux
+  description: InfluxDB plugin for Adhearsion
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+spec:
+  type: library
+  owner: guardians-of-the-galaxy
+  lifecycle: production
